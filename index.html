@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tamo de Cuba | Desarrollo Web & Soluciones Digitales</title>
+  <title>EMIL BORREGO | Desarrollo Web & Soluciones Digitales</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -44,8 +44,8 @@
 
       <div class="relative z-10 flex flex-col items-center">
         <div class="relative mb-4">
-          <!-- La foto se actualiza dinámicamente desde D1 -->
-          <img id="profile-pic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="Foto" class="w-28 h-28 rounded-full object-cover ring-4 ring-indigo-500/40 shadow-xl">
+          <!-- Foto de perfil actualizada con la imagen subida a la raíz -->
+          <img id="profile-pic" src="/1793153871960_edit_37800844962483.jpg" alt="Tamo de Cuba" class="w-28 h-28 rounded-full object-cover ring-4 ring-indigo-500/40 shadow-xl">
           <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Disponible"></span>
         </div>
 
@@ -192,7 +192,9 @@
         const data = await res.json();
         services = data.services || [];
         reviews = data.reviews || [];
-        profilePhoto = data.profilePhoto || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80";
+        
+        // Si el backend devuelve una foto personalizada, la usa; si no, mantiene la de la raíz por defecto
+        profilePhoto = data.profilePhoto || "/1793153871960_edit_37800844962483.jpg";
         
         renderServices();
         renderReviews();
