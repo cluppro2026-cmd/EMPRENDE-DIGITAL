@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tamo de Cuba | Desarrollo Web & Soluciones Digitales</title>
+  <title>Emil Borrego | Desarrollo Web & Soluciones Digitales</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -25,16 +25,12 @@
 </head>
 <body class="min-h-screen pb-12">
 
-  <!-- Header (Sin rastro de admin visible) -->
+  <!-- Header Limpio sin rastro alguno -->
   <header class="sticky top-0 z-40 glass border-b border-slate-800 px-4 py-3">
     <div class="max-w-xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
         <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">T</div>
         <span class="font-bold text-lg tracking-wide text-white">Tamo de Cuba</span>
-      </div>
-      <!-- Botón invisible / secreto al tocar el icono -->
-      <div onclick="checkSecretAdmin()" class="w-8 h-8 flex items-center justify-center cursor-pointer opacity-20 hover:opacity-100 transition" title="Modo Oculto">
-        <i class="fa-solid fa-shield text-xs text-slate-400"></i>
       </div>
     </div>
   </header>
@@ -136,7 +132,7 @@
 
   </main>
 
-  <!-- MODAL ADMIN OCULTO -->
+  <!-- MODAL ADMIN -->
   <div id="admin-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass max-w-md w-full rounded-3xl p-6 max-h-[90vh] overflow-y-auto space-y-6">
       
@@ -175,7 +171,7 @@
     let services = [];
     let reviews = [];
     let currentRating = 5;
-    const CORRECT_PIN = "1234"; // Cambia esto si deseas otro PIN
+    const CORRECT_PIN = "1234";
 
     async function loadData() {
       try {
@@ -279,9 +275,7 @@
       window.open(`https://wa.me/5351576767?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    // ACCESO OCULTO AL PANEL ADMIN
-    function checkSecretAdmin() {
-      // Abre el modal directamente sin botones visibles
+    function openAdminModal() {
       document.getElementById('admin-modal').classList.remove('hidden');
       document.getElementById('admin-login-view').classList.remove('hidden');
       document.getElementById('admin-dashboard-view').classList.add('hidden');
@@ -336,7 +330,7 @@
     }
 
     async function deleteService(id) {
-      const pin = document.getElementById('admin-pin.value') || document.getElementById('admin-pin').value;
+      const pin = document.getElementById('admin-pin').value;
       const res = await fetch(`${API_BASE}/api/services/${id}`, {
         method: 'DELETE',
         headers: { 'X-Admin-Pin': pin }
@@ -344,9 +338,9 @@
       if (res.ok) { loadData(); renderAdminServices(); } else { alert('Error al eliminar'); }
     }
 
-    // Auto-abrir si entran con #admin en la URL
+    // Abre el panel automáticamente solo si usas #admin en la URL
     if (window.location.hash === '#admin') {
-      checkSecretAdmin();
+      openAdminModal();
     }
 
     loadData();
