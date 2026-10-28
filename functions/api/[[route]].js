@@ -14,10 +14,39 @@ export async function onRequest(context) {
   }
 
   try {
+    // Asegurar que exista la tabla settings
+    await env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT
+      )
+    `).run();
+
     if (path === "/api/data" && request.method === "GET") {
       const { results: services } = await env.DB.prepare("SELECT * FROM services ORDER BY created_at DESC").all();
       const { results: reviews } = await env.DB.prepare("SELECT * FROM reviews ORDER BY created_at DESC").all();
-      return Response.json({ services, reviews }, { headers: corsHeaders });
+      const { results: settings } = await env.DB.prepare("SELECT * FROM settings").all();
+      
+      let profilePhoto = "";
+      settings.forEach(s => {
+        if (s.key === 'profile_photo') profilePhoto = s.value;
+      });
+
+      return Response.json({ services, reviews, profilePhoto }, { headers: corsHeaders });
+    }
+
+    if (path === "/api/settings" && request.method === "POST") {
+      const pin = request.headers.get("X-Admin-Pin");
+      if (pin !== "1234") {
+        return new Response(JSON.stringify({ error: "PIN incorrecto" }), { status: 401, headers: corsHeaders });
+      }
+
+      const { key, value } = await request.json();
+      await env.DB.prepare(
+        "INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = ?"
+      ).bind(key, value, value).run();
+
+      return Response.json({ success: true }, { headers: corsHeaders });
     }
 
     if (path === "/api/services" && request.method === "POST") {
