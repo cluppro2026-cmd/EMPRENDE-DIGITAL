@@ -25,16 +25,17 @@
 </head>
 <body class="min-h-screen pb-12">
 
-  <!-- Header -->
+  <!-- Header (Sin rastro de admin visible) -->
   <header class="sticky top-0 z-40 glass border-b border-slate-800 px-4 py-3">
     <div class="max-w-xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
         <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">T</div>
         <span class="font-bold text-lg tracking-wide text-white">Tamo de Cuba</span>
       </div>
-      <button onclick="openAdminModal()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
-        <i class="fa-solid fa-lock mr-1"></i> Admin
-      </button>
+      <!-- Botón invisible / secreto al tocar el icono -->
+      <div onclick="checkSecretAdmin()" class="w-8 h-8 flex items-center justify-center cursor-pointer opacity-20 hover:opacity-100 transition" title="Modo Oculto">
+        <i class="fa-solid fa-shield text-xs text-slate-400"></i>
+      </div>
     </div>
   </header>
 
@@ -75,7 +76,7 @@
         <h2 class="text-xl font-bold text-white flex items-center gap-2">
           <i class="fa-solid fa-cubes text-indigo-400"></i> Mis Servicios
         </h2>
-        <span id="loader-status" class="text-xs text-slate-400">Cargando...</span>
+        <span id="loader-status" class="text-xs text-slate-400">Sincronizado</span>
       </div>
       <div id="services-list" class="space-y-4"></div>
     </section>
@@ -135,21 +136,23 @@
 
   </main>
 
-  <!-- MODAL ADMIN -->
+  <!-- MODAL ADMIN OCULTO -->
   <div id="admin-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass max-w-md w-full rounded-3xl p-6 max-h-[90vh] overflow-y-auto space-y-6">
+      
       <div id="admin-login-view" class="space-y-4">
         <div class="flex justify-between items-center">
-          <h3 class="text-lg font-bold text-white">Panel Administrador (D1)</h3>
+          <h3 class="text-lg font-bold text-white">Acceso Privado</h3>
           <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <input type="password" id="admin-pin" placeholder="PIN (1234)" class="w-full glass-input rounded-xl px-3 py-2.5 text-center text-lg text-white font-bold tracking-widest">
-        <button onclick="verifyPinLocally()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm">Entrar</button>
+        <p class="text-xs text-slate-400">Ingresa tu PIN de administración:</p>
+        <input type="password" id="admin-pin" placeholder="••••" class="w-full glass-input rounded-xl px-3 py-2.5 text-center text-lg text-white font-bold tracking-widest">
+        <button onclick="verifyPinLocally()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm">Entrar al Panel</button>
       </div>
 
       <div id="admin-dashboard-view" class="hidden space-y-6">
         <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-          <h3 class="text-lg font-bold text-white">Gestión D1</h3>
+          <h3 class="text-lg font-bold text-white">Panel Admin (D1)</h3>
           <button onclick="closeAdminModal()" class="text-xs bg-slate-800 px-3 py-1 rounded-lg text-slate-300">Cerrar</button>
         </div>
         <div class="space-y-3">
@@ -172,7 +175,7 @@
     let services = [];
     let reviews = [];
     let currentRating = 5;
-    let storedPin = "1234";
+    const CORRECT_PIN = "1234"; // Cambia esto si deseas otro PIN
 
     async function loadData() {
       try {
@@ -182,9 +185,8 @@
         reviews = data.reviews || [];
         renderServices();
         renderReviews();
-        document.getElementById('loader-status').innerText = "Sincronizado";
       } catch (e) {
-        document.getElementById('loader-status').innerText = "Error D1";
+        console.error(e);
       }
     }
 
@@ -277,17 +279,20 @@
       window.open(`https://wa.me/5351576767?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    function openAdminModal() {
+    // ACCESO OCULTO AL PANEL ADMIN
+    function checkSecretAdmin() {
+      // Abre el modal directamente sin botones visibles
       document.getElementById('admin-modal').classList.remove('hidden');
       document.getElementById('admin-login-view').classList.remove('hidden');
       document.getElementById('admin-dashboard-view').classList.add('hidden');
       document.getElementById('admin-pin').value = '';
     }
+
     function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
 
     function verifyPinLocally() {
       const pin = document.getElementById('admin-pin').value;
-      if (pin === storedPin) {
+      if (pin === CORRECT_PIN) {
         document.getElementById('admin-login-view').classList.add('hidden');
         document.getElementById('admin-dashboard-view').classList.remove('hidden');
         renderAdminServices();
@@ -331,12 +336,17 @@
     }
 
     async function deleteService(id) {
-      const pin = document.getElementById('admin-pin').value;
+      const pin = document.getElementById('admin-pin.value') || document.getElementById('admin-pin').value;
       const res = await fetch(`${API_BASE}/api/services/${id}`, {
         method: 'DELETE',
         headers: { 'X-Admin-Pin': pin }
       });
       if (res.ok) { loadData(); renderAdminServices(); } else { alert('Error al eliminar'); }
+    }
+
+    // Auto-abrir si entran con #admin en la URL
+    if (window.location.hash === '#admin') {
+      checkSecretAdmin();
     }
 
     loadData();
