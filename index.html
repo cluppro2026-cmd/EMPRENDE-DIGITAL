@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EMIL BORREGO | Desarrollo Web & Soluciones Digitales</title>
+  <title>Tamo de Cuba | Desarrollo Web & Soluciones Digitales</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -76,6 +76,86 @@
         <span id="loader-status" class="text-xs text-slate-400">Sincronizado</span>
       </div>
       <div id="services-list" class="space-y-4"></div>
+    </section>
+
+    <!-- PORTAFOLIO / EJEMPLOS DE TRABAJOS -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold text-white flex items-center gap-2">
+        <i class="fa-solid fa-laptop-code text-indigo-400"></i> Ejemplos de Soluciones Web
+      </h2>
+      <div class="grid grid-cols-1 gap-4">
+        
+        <!-- Cartas de Menú -->
+        <div class="glass rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-full sm:w-1/3 h-28 bg-slate-800 rounded-xl flex items-center justify-center text-indigo-400 text-2xl border border-slate-700">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <div class="w-full sm:w-2/3 space-y-1 text-left">
+            <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Gastronomía</span>
+            <h3 class="font-bold text-white text-base">Cartas de Menú Digitales</h3>
+            <p class="text-xs text-slate-300">Menús interactivos optimizados para códigos QR, ideales para cafeterías y restaurantes locales.</p>
+          </div>
+        </div>
+
+        <!-- Páginas para Negocios -->
+        <div class="glass rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-full sm:w-1/3 h-28 bg-slate-800 rounded-xl flex items-center justify-center text-indigo-400 text-2xl border border-slate-700">
+            <i class="fa-solid fa-store"></i>
+          </div>
+          <div class="w-full sm:w-2/3 space-y-1 text-left">
+            <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Comercio</span>
+            <h3 class="font-bold text-white text-base">Webs para Negocios</h3>
+            <p class="text-xs text-slate-300">Plataformas institucionales y catálogos de productos modernos para dar presencia profesional.</p>
+          </div>
+        </div>
+
+        <!-- Servicios de Mensajería / Pedidos -->
+        <div class="glass rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-full sm:w-1/3 h-28 bg-slate-800 rounded-xl flex items-center justify-center text-indigo-400 text-2xl border border-slate-700">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="w-full sm:w-2/3 space-y-1 text-left">
+            <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Logística & Delivery</span>
+            <h3 class="font-bold text-white text-base">Servicios de Mensajería</h3>
+            <p class="text-xs text-slate-300">Sistemas de pedidos automatizados y paneles de control para gestión de entregas y envíos.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CRECIMIENTO EN REDES SOCIALES -->
+    <section class="glass rounded-3xl p-6 space-y-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-pink-600/20 text-pink-400 flex items-center justify-center text-lg border border-pink-500/30">
+          <i class="fa-solid fa-fire"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-white">Crecimiento en Redes Sociales</h2>
+          <p class="text-xs text-slate-400">Impulsa tu presencia digital con seguridad y constancia</p>
+        </div>
+      </div>
+      
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Ofrecemos paquetes de crecimiento y posicionamiento para redes sociales (Facebook, Instagram, Telegram). <strong>No manejamos tarifas fijas públicas; todo se gestiona de forma personalizada por WhatsApp</strong> para adaptarnos exactamente a lo que tu cuenta o negocio necesita.
+      </p>
+
+      <div class="grid grid-cols-2 gap-3 pt-2">
+        <div class="glass-input p-3 rounded-2xl text-center space-y-1">
+          <i class="fa-brands fa-instagram text-pink-400 text-xl"></i>
+          <h4 class="text-xs font-bold text-white">Instagram</h4>
+          <p class="text-[10px] text-slate-400">Seguidores & Interacción</p>
+        </div>
+        <div class="glass-input p-3 rounded-2xl text-center space-y-1">
+          <i class="fa-brands fa-facebook text-blue-400 text-xl"></i>
+          <h4 class="text-xs font-bold text-white">Facebook</h4>
+          <p class="text-[10px] text-slate-400">Páginas & Engagement</p>
+        </div>
+      </div>
+
+      <a href="https://wa.me/5351576767?text=Hola%20Tamo,%20quiero%20consultar%20sobre%20el%20crecimiento%20en%20redes%20sociales" target="_blank" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-pink-600/20">
+        <i class="fa-brands fa-whatsapp text-base"></i> Consultar Redes por WhatsApp
+      </a>
     </section>
 
     <!-- COTIZADOR -->
@@ -170,9 +250,15 @@
         </div>
 
         <!-- ELIMINAR SERVICIOS -->
-        <div class="space-y-2">
+        <div class="space-y-2 border-b border-slate-800 pb-4">
           <h4 class="text-xs font-bold text-indigo-400 uppercase">Servicios Activos</h4>
           <div id="admin-services-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- GESTIONAR RESEÑAS -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-indigo-400 uppercase">Gestionar Reseñas (Eliminar)</h4>
+          <div id="admin-reviews-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
         </div>
       </div>
     </div>
@@ -193,7 +279,6 @@
         services = data.services || [];
         reviews = data.reviews || [];
         
-        // Si el backend devuelve una foto personalizada, la usa; si no, mantiene la de la raíz por defecto
         profilePhoto = data.profilePhoto || "/1793153871960_edit_37800844962483.jpg";
         
         renderServices();
@@ -308,6 +393,7 @@
         document.getElementById('admin-login-view').classList.add('hidden');
         document.getElementById('admin-dashboard-view').classList.remove('hidden');
         renderAdminServices();
+        renderAdminReviews();
       } else { alert('PIN incorrecto'); }
     }
 
@@ -319,6 +405,23 @@
           <div class="flex items-center justify-between bg-slate-900/60 p-2 rounded-xl text-xs">
             <span class="text-white truncate max-w-[200px]">${svc.title}</span>
             <button onclick="deleteService('${svc.id}')" class="text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      });
+    }
+
+    function renderAdminReviews() {
+      const container = document.getElementById('admin-reviews-list');
+      container.innerHTML = '';
+      if (reviews.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500">No hay reseñas para administrar.</p>`;
+        return;
+      }
+      reviews.forEach(rev => {
+        container.innerHTML += `
+          <div class="flex items-center justify-between bg-slate-900/60 p-2 rounded-xl text-xs">
+            <span class="text-white truncate max-w-[180px]"><strong>${rev.name}:</strong> ${rev.text}</span>
+            <button onclick="deleteReview('${rev.id}')" class="text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
           </div>
         `;
       });
@@ -374,6 +477,21 @@
         headers: { 'X-Admin-Pin': pin }
       });
       if (res.ok) { loadData(); renderAdminServices(); } else { alert('Error al eliminar'); }
+    }
+
+    async function deleteReview(id) {
+      const pin = document.getElementById('admin-pin').value;
+      const res = await fetch(`${API_BASE}/api/reviews/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Pin': pin }
+      });
+      if (res.ok) { 
+        loadData(); 
+        renderAdminReviews(); 
+        alert('¡Reseña eliminada!');
+      } else { 
+        alert('Error al eliminar reseña'); 
+      }
     }
 
     if (window.location.hash === '#admin') {
