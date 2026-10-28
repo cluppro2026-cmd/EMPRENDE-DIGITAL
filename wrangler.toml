@@ -1,0 +1,11 @@
+name = "tamo-landing"
+main = "worker.js"
+compatibility_date = "2026-10-27"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "emil-db"
+database_id = "41d4bfae-4908-4d9e-a256-236d09337cf4"
+
+[vars]
+ADMIN_PIN = "1234"
