@@ -37,11 +37,10 @@
 
   <main class="max-w-xl mx-auto px-4 pt-6 space-y-10">
 
-    <!-- HERO CON FONDO TRANSPARENTE (Imagen 1) -->
+    <!-- HERO CON FONDO TRANSPARENTE -->
     <section class="glass rounded-3xl p-6 text-center relative overflow-hidden">
-      <!-- Fondo transparente con la primera imagen -->
       <div class="absolute inset-0 z-0 opacity-15 pointer-events-none">
-        <img src="/1793162452298.jpg" alt="Fondo Fondo 1" class="w-full h-full object-cover">
+        <img src="/1793162452298.jpg" alt="Fondo Hero" class="w-full h-full object-cover">
       </div>
 
       <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl"></div>
@@ -82,21 +81,34 @@
       <div id="services-list" class="space-y-4"></div>
     </section>
 
-    <!-- SECCIÓN DE MUESTRAS CON FONDO TRANSPARENTE (Imagen 2) -->
-    <section class="glass rounded-3xl p-6 space-y-4 relative overflow-hidden">
-      <!-- Fondo transparente con la segunda imagen -->
-      <div class="absolute inset-0 z-0 opacity-15 pointer-events-none">
-        <img src="/1793162344918.jpg" alt="Fondo Fondo 2" class="w-full h-full object-cover">
+    <!-- SECCIÓN DE ANEXOS / MUESTRAS VISUALES NORMALES -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-bold text-white flex items-center gap-2">
+        <i class="fa-solid fa-images text-indigo-400"></i> Muestras Visuales de Trabajos
+      </h2>
+      
+      <div class="grid grid-cols-1 gap-4">
+        <!-- Anexo 1 -->
+        <div class="glass rounded-2xl overflow-hidden border border-slate-700/50 shadow-lg">
+          <img src="/1793162452298.jpg" alt="Muestra visual 1" class="w-full object-cover max-h-96">
+          <div class="p-4 bg-slate-900/40">
+            <h3 class="font-bold text-white text-sm">Desarrollo de Aplicaciones & dApps</h3>
+            <p class="text-xs text-slate-400 mt-1">Vista previa de plataformas interactivas y ecosistemas descentralizados.</p>
+          </div>
+        </div>
+
+        <!-- Anexo 2 -->
+        <div class="glass rounded-2xl overflow-hidden border border-slate-700/50 shadow-lg">
+          <img src="/1793162344918.jpg" alt="Muestra visual 2" class="w-full object-cover max-h-96">
+          <div class="p-4 bg-slate-900/40">
+            <h3 class="font-bold text-white text-sm">Plataformas Web & Soluciones Digitales</h3>
+            <p class="text-xs text-slate-400 mt-1">Estructura moderna optimizada para dispositivos móviles.</p>
+          </div>
+        </div>
       </div>
 
-      <div class="relative z-10 space-y-4">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-images text-indigo-400"></i> Muestras Visuales de Trabajos
-        </h2>
-        <p class="text-xs text-slate-300">
-          Explora los resultados visuales de nuestras aplicaciones, plataformas DeFi y desarrollos móviles implementados.
-        </p>
-      </div>
+      <!-- Contenedor dinámico por si añades más desde el panel -->
+      <div id="portfolio-grid" class="grid grid-cols-1 gap-4"></div>
     </section>
 
     <!-- COTIZADOR -->
@@ -181,6 +193,14 @@
           <button onclick="updateProfilePhoto()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl text-xs">Actualizar Foto</button>
         </div>
 
+        <!-- AÑADIR IMAGEN A LA GALERÍA -->
+        <div class="space-y-3 border-b border-slate-800 pb-4">
+          <h4 class="text-xs font-bold text-indigo-400 uppercase">Añadir Muestra Visual (Imagen)</h4>
+          <input type="text" id="new-portfolio-img" placeholder="Enlace de la imagen (URL o ruta)" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
+          <input type="text" id="new-portfolio-title" placeholder="Título o categoría" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
+          <button onclick="addPortfolioItem()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl text-xs">+ Subir a Galería</button>
+        </div>
+
         <!-- AÑADIR SERVICIO -->
         <div class="space-y-3 border-b border-slate-800 pb-4">
           <h4 class="text-xs font-bold text-indigo-400 uppercase">Añadir Nuevo Servicio</h4>
@@ -209,6 +229,7 @@
     const API_BASE = ""; 
     let services = [];
     let reviews = [];
+    let portfolio = [];
     let profilePhoto = "";
     let currentRating = 5;
     const CORRECT_PIN = "1234";
@@ -219,9 +240,12 @@
         const data = await res.json();
         services = data.services || [];
         reviews = data.reviews || [];
+        portfolio = data.portfolio || [];
+        
         profilePhoto = data.profilePhoto || "/1793153871960_edit_37800844962483.jpg";
         
         renderServices();
+        renderPortfolio();
         renderReviews();
         document.getElementById('profile-pic').src = profilePhoto;
       } catch (e) {
@@ -252,6 +276,21 @@
             <input type="checkbox" name="svc_check" value="${svc.title}" class="w-4 h-4 rounded text-indigo-600 accent-indigo-600">
             <span class="text-xs text-slate-200 font-medium">${svc.title}</span>
           </label>
+        `;
+      });
+    }
+
+    function renderPortfolio() {
+      const container = document.getElementById('portfolio-grid');
+      container.innerHTML = '';
+      portfolio.forEach(item => {
+        container.innerHTML += `
+          <div class="glass rounded-2xl overflow-hidden border border-slate-700/50 shadow-lg">
+            <img src="${item.image}" alt="${item.title}" class="w-full object-cover max-h-96">
+            <div class="p-4 bg-slate-900/40">
+              <h3 class="font-bold text-white text-sm">${item.title}</h3>
+            </div>
+          </div>
         `;
       });
     }
@@ -383,6 +422,26 @@
         loadData();
         alert('¡Foto de perfil actualizada!');
       } else { alert('Error'); }
+    }
+
+    async function addPortfolioItem() {
+      const image = document.getElementById('new-portfolio-img').value.trim();
+      const title = document.getElementById('new-portfolio-title').value.trim();
+      const pin = document.getElementById('admin-pin').value;
+      if (!image || !title) return alert('Completa los campos de la imagen');
+
+      const res = await fetch(`${API_BASE}/api/portfolio`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Pin': pin },
+        body: JSON.stringify({ image, title })
+      });
+
+      if (res.ok) {
+        document.getElementById('new-portfolio-img').value = '';
+        document.getElementById('new-portfolio-title').value = '';
+        loadData();
+        alert('¡Muestra visual agregada con éxito!');
+      } else { alert('Error al guardar la imagen'); }
     }
 
     async function addNewService() {
