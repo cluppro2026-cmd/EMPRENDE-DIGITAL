@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tamo de Cuba | Desarrollo Web & Soluciones Digitales</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: { dark: '#0f172a', card: '#1e293b' } }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0b0f19; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-input { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); }
+  </style>
+</head>
+<body class="min-h-screen pb-12">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 glass border-b border-slate-800 px-4 py-3">
+    <div class="max-w-xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">T</div>
+        <span class="font-bold text-lg tracking-wide text-white">Tamo de Cuba</span>
+      </div>
+      <button onclick="openAdminModal()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+        <i class="fa-solid fa-lock mr-1"></i> Admin
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-xl mx-auto px-4 pt-6 space-y-10">
+
+    <!-- HERO -->
+    <section class="glass rounded-3xl p-6 text-center relative overflow-hidden">
+      <div class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl"></div>
+      <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
+
+      <div class="relative z-10 flex flex-col items-center">
+        <div class="relative mb-4">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="Foto" class="w-28 h-28 rounded-full object-cover ring-4 ring-indigo-500/40 shadow-xl">
+          <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Disponible"></span>
+        </div>
+
+        <h1 class="text-2xl font-extrabold text-white">Tamo de Cuba</h1>
+        <p class="text-indigo-400 font-medium text-sm mb-3">Desarrollador Web & Especialista Digital</p>
+
+        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+          Transformo negocios e ideas en plataformas web modernas, rápidas y optimizadas para atraer más clientes y aumentar ventas.
+        </p>
+
+        <div class="flex flex-wrap gap-3 w-full justify-center">
+          <a href="#contacto" class="flex-1 min-w-[140px] bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> Cotizar Ahora
+          </a>
+          <a href="https://wa.me/5351576767" target="_blank" class="flex-1 min-w-[140px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-cubes text-indigo-400"></i> Mis Servicios
+        </h2>
+        <span id="loader-status" class="text-xs text-slate-400">Cargando...</span>
+      </div>
+      <div id="services-list" class="space-y-4"></div>
+    </section>
+
+    <!-- COTIZADOR -->
+    <section id="contacto" class="glass rounded-3xl p-6 space-y-4">
+      <h2 class="text-xl font-bold text-white flex items-center gap-2">
+        <i class="fa-solid fa-calculator text-indigo-400"></i> Solicitar Desarrollo
+      </h2>
+      <form id="quote-form" onsubmit="sendWhatsAppQuote(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Tu Nombre / Negocio *</label>
+          <input type="text" id="cust-name" required placeholder="Ej: Carlos - Cafetería" class="w-full glass-input rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Servicios de interés *</label>
+          <div id="checkbox-services" class="space-y-2 pt-1"></div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Detalles del Proyecto</label>
+          <textarea id="cust-details" rows="3" placeholder="Cuéntame más..." class="w-full glass-input rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
+          <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Cotización por WhatsApp
+        </button>
+      </form>
+    </section>
+
+    <!-- RESEÑAS -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-star text-amber-400"></i> Reseñas de Clientes
+        </h2>
+        <button onclick="toggleReviewForm()" class="text-xs text-indigo-400 hover:underline">Escribir reseña</button>
+      </div>
+
+      <div id="review-form-container" class="hidden glass rounded-2xl p-4 space-y-3">
+        <h3 class="text-sm font-semibold text-white">Deja tu valoración</h3>
+        <input type="text" id="rev-author" placeholder="Tu Nombre o Negocio" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white mb-2">
+        <div class="flex items-center gap-1 mb-2">
+          <span class="text-xs text-slate-400 mr-2">Calificación:</span>
+          <div id="star-rating" class="flex text-amber-400 gap-1 cursor-pointer text-lg">
+            <i class="fa-solid fa-star" onclick="setRating(1)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(2)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(3)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(4)"></i>
+            <i class="fa-solid fa-star" onclick="setRating(5)"></i>
+          </div>
+        </div>
+        <textarea id="rev-text" rows="2" placeholder="¿Cómo fue tu experiencia?" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white"></textarea>
+        <button onclick="submitReview()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl text-xs">Publicar Reseña</button>
+      </div>
+
+      <div id="reviews-list" class="space-y-3"></div>
+    </section>
+
+  </main>
+
+  <!-- MODAL ADMIN -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-md w-full rounded-3xl p-6 max-h-[90vh] overflow-y-auto space-y-6">
+      <div id="admin-login-view" class="space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-bold text-white">Panel Administrador (D1)</h3>
+          <button onclick="closeAdminModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <input type="password" id="admin-pin" placeholder="PIN (1234)" class="w-full glass-input rounded-xl px-3 py-2.5 text-center text-lg text-white font-bold tracking-widest">
+        <button onclick="verifyPinLocally()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm">Entrar</button>
+      </div>
+
+      <div id="admin-dashboard-view" class="hidden space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <h3 class="text-lg font-bold text-white">Gestión D1</h3>
+          <button onclick="closeAdminModal()" class="text-xs bg-slate-800 px-3 py-1 rounded-lg text-slate-300">Cerrar</button>
+        </div>
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold text-indigo-400 uppercase">Añadir Nuevo Servicio</h4>
+          <input type="text" id="new-svc-title" placeholder="Título" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
+          <textarea id="new-svc-desc" placeholder="Descripción..." class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white" rows="2"></textarea>
+          <input type="text" id="new-svc-icon" placeholder="Icono (ej: fa-utensils)" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
+          <button onclick="addNewService()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs">+ Guardar en Base de Datos</button>
+        </div>
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold text-indigo-400 uppercase">Servicios Activos</h4>
+          <div id="admin-services-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = ""; 
+    let services = [];
+    let reviews = [];
+    let currentRating = 5;
+    let storedPin = "1234";
+
+    async function loadData() {
+      try {
+        const res = await fetch(`${API_BASE}/api/data`);
+        const data = await res.json();
+        services = data.services || [];
+        reviews = data.reviews || [];
+        renderServices();
+        renderReviews();
+        document.getElementById('loader-status').innerText = "Sincronizado";
+      } catch (e) {
+        document.getElementById('loader-status').innerText = "Error D1";
+      }
+    }
+
+    function renderServices() {
+      const container = document.getElementById('services-list');
+      const checkboxContainer = document.getElementById('checkbox-services');
+      container.innerHTML = '';
+      checkboxContainer.innerHTML = '';
+
+      services.forEach(svc => {
+        container.innerHTML += `
+          <div class="glass rounded-2xl p-5 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center shrink-0 text-xl border border-indigo-500/30">
+              <i class="fa-solid ${svc.icon || 'fa-code'}"></i>
+            </div>
+            <div class="space-y-1">
+              <h3 class="font-bold text-white text-base">${svc.title}</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">${svc.description}</p>
+            </div>
+          </div>
+        `;
+        checkboxContainer.innerHTML += `
+          <label class="flex items-center gap-3 glass-input p-2.5 rounded-xl cursor-pointer hover:bg-slate-800/80 transition">
+            <input type="checkbox" name="svc_check" value="${svc.title}" class="w-4 h-4 rounded text-indigo-600 accent-indigo-600">
+            <span class="text-xs text-slate-200 font-medium">${svc.title}</span>
+          </label>
+        `;
+      });
+    }
+
+    function renderReviews() {
+      const container = document.getElementById('reviews-list');
+      container.innerHTML = '';
+      if (reviews.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">Aún no hay opiniones.</p>`;
+        return;
+      }
+      reviews.forEach(rev => {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+          stars += `<i class="fa-solid fa-star ${i <= rev.rating ? 'text-amber-400' : 'text-slate-700'} text-xs"></i>`;
+        }
+        container.innerHTML += `
+          <div class="glass rounded-2xl p-4 space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-white">${rev.name}</span>
+              <div class="flex gap-1">${stars}</div>
+            </div>
+            <p class="text-xs text-slate-300 italic">"${rev.text}"</p>
+          </div>
+        `;
+      });
+    }
+
+    function toggleReviewForm() { document.getElementById('review-form-container').classList.toggle('hidden'); }
+    function setRating(val) {
+      currentRating = val;
+      const stars = document.getElementById('star-rating').children;
+      for (let i = 0; i < 5; i++) stars[i].className = i < val ? 'fa-solid fa-star text-amber-400' : 'fa-solid fa-star text-slate-700';
+    }
+
+    async function submitReview() {
+      const name = document.getElementById('rev-author').value.trim();
+      const text = document.getElementById('rev-text').value.trim();
+      if (!name || !text) return alert('Completa los campos.');
+
+      await fetch(`${API_BASE}/api/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, rating: currentRating, text })
+      });
+
+      document.getElementById('rev-author').value = '';
+      document.getElementById('rev-text').value = '';
+      toggleReviewForm();
+      loadData();
+      alert('¡Reseña publicada!');
+    }
+
+    function sendWhatsAppQuote(e) {
+      e.preventDefault();
+      const name = document.getElementById('cust-name').value.trim();
+      const details = document.getElementById('cust-details').value.trim();
+      const checked = Array.from(document.querySelectorAll('input[name="svc_check"]:checked')).map(cb => `• ${cb.value}`);
+      if (checked.length === 0) return alert('Selecciona al menos un servicio.');
+
+      let msg = `*COTIZACIÓN WEB*\n\n*Cliente:* ${name}\n*Servicios:*\n${checked.join('\n')}\n`;
+      if (details) msg += `*Detalles:* ${details}\n`;
+
+      window.open(`https://wa.me/5351576767?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function openAdminModal() {
+      document.getElementById('admin-modal').classList.remove('hidden');
+      document.getElementById('admin-login-view').classList.remove('hidden');
+      document.getElementById('admin-dashboard-view').classList.add('hidden');
+      document.getElementById('admin-pin').value = '';
+    }
+    function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+
+    function verifyPinLocally() {
+      const pin = document.getElementById('admin-pin').value;
+      if (pin === storedPin) {
+        document.getElementById('admin-login-view').classList.add('hidden');
+        document.getElementById('admin-dashboard-view').classList.remove('hidden');
+        renderAdminServices();
+      } else { alert('PIN incorrecto'); }
+    }
+
+    function renderAdminServices() {
+      const container = document.getElementById('admin-services-list');
+      container.innerHTML = '';
+      services.forEach(svc => {
+        container.innerHTML += `
+          <div class="flex items-center justify-between bg-slate-900/60 p-2 rounded-xl text-xs">
+            <span class="text-white truncate max-w-[200px]">${svc.title}</span>
+            <button onclick="deleteService('${svc.id}')" class="text-red-400 hover:text-red-300 px-2 py-1"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      });
+    }
+
+    async function addNewService() {
+      const title = document.getElementById('new-svc-title').value.trim();
+      const desc = document.getElementById('new-svc-desc').value.trim();
+      const icon = document.getElementById('new-svc-icon').value.trim() || "fa-code";
+      const pin = document.getElementById('admin-pin').value;
+      if (!title || !desc) return alert('Completa los campos');
+
+      const res = await fetch(`${API_BASE}/api/services`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Pin': pin },
+        body: JSON.stringify({ title, description: desc, icon })
+      });
+
+      if (res.ok) {
+        document.getElementById('new-svc-title').value = '';
+        document.getElementById('new-svc-desc').value = '';
+        document.getElementById('new-svc-icon').value = '';
+        loadData();
+        renderAdminServices();
+        alert('¡Servicio guardado en D1!');
+      } else { alert('Error al guardar'); }
+    }
+
+    async function deleteService(id) {
+      const pin = document.getElementById('admin-pin').value;
+      const res = await fetch(`${API_BASE}/api/services/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Pin': pin }
+      });
+      if (res.ok) { loadData(); renderAdminServices(); } else { alert('Error al eliminar'); }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
