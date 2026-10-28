@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emil Borrego | Desarrollo Web & Soluciones Digitales</title>
+  <title>Tamo de Cuba | Desarrollo Web & Soluciones Digitales</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -25,7 +25,7 @@
 </head>
 <body class="min-h-screen pb-12">
 
-  <!-- Header Limpio sin rastro alguno -->
+  <!-- Header Limpio -->
   <header class="sticky top-0 z-40 glass border-b border-slate-800 px-4 py-3">
     <div class="max-w-xl mx-auto flex justify-between items-center">
       <div class="flex items-center gap-2">
@@ -44,12 +44,13 @@
 
       <div class="relative z-10 flex flex-col items-center">
         <div class="relative mb-4">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="Foto" class="w-28 h-28 rounded-full object-cover ring-4 ring-indigo-500/40 shadow-xl">
+          <!-- La foto se actualiza dinámicamente desde D1 -->
+          <img id="profile-pic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="Foto" class="w-28 h-28 rounded-full object-cover ring-4 ring-indigo-500/40 shadow-xl">
           <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full" title="Disponible"></span>
         </div>
 
         <h1 class="text-2xl font-extrabold text-white">Tamo de Cuba</h1>
-        <p class="text-indigo-400 font-medium text-sm mb-3">Desarrollador Web & Especialista Digital</p>
+        <p class="text-indigo-400 font-medium text-sm mb-3">Desarrollador Web & Solucion Digital</p>
 
         <p class="text-slate-300 text-sm leading-relaxed mb-6">
           Transformo negocios e ideas en plataformas web modernas, rápidas y optimizadas para atraer más clientes y aumentar ventas.
@@ -151,13 +152,24 @@
           <h3 class="text-lg font-bold text-white">Panel Admin (D1)</h3>
           <button onclick="closeAdminModal()" class="text-xs bg-slate-800 px-3 py-1 rounded-lg text-slate-300">Cerrar</button>
         </div>
-        <div class="space-y-3">
+
+        <!-- CAMBIAR FOTO DE PERFIL -->
+        <div class="space-y-3 border-b border-slate-800 pb-4">
+          <h4 class="text-xs font-bold text-indigo-400 uppercase">Cambiar Foto de Perfil</h4>
+          <input type="text" id="new-photo-url" placeholder="Pega el enlace de la imagen (URL)" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
+          <button onclick="updateProfilePhoto()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-xl text-xs">Actualizar Foto</button>
+        </div>
+
+        <!-- AÑADIR SERVICIO -->
+        <div class="space-y-3 border-b border-slate-800 pb-4">
           <h4 class="text-xs font-bold text-indigo-400 uppercase">Añadir Nuevo Servicio</h4>
           <input type="text" id="new-svc-title" placeholder="Título" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
           <textarea id="new-svc-desc" placeholder="Descripción..." class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white" rows="2"></textarea>
           <input type="text" id="new-svc-icon" placeholder="Icono (ej: fa-utensils)" class="w-full glass-input rounded-xl px-3 py-2 text-xs text-white">
-          <button onclick="addNewService()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs">+ Guardar en Base de Datos</button>
+          <button onclick="addNewService()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs">+ Guardar Servicio</button>
         </div>
+
+        <!-- ELIMINAR SERVICIOS -->
         <div class="space-y-2">
           <h4 class="text-xs font-bold text-indigo-400 uppercase">Servicios Activos</h4>
           <div id="admin-services-list" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
@@ -170,6 +182,7 @@
     const API_BASE = ""; 
     let services = [];
     let reviews = [];
+    let profilePhoto = "";
     let currentRating = 5;
     const CORRECT_PIN = "1234";
 
@@ -179,8 +192,11 @@
         const data = await res.json();
         services = data.services || [];
         reviews = data.reviews || [];
+        profilePhoto = data.profilePhoto || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80";
+        
         renderServices();
         renderReviews();
+        document.getElementById('profile-pic').src = profilePhoto;
       } catch (e) {
         console.error(e);
       }
@@ -306,6 +322,26 @@
       });
     }
 
+    async function updateProfilePhoto() {
+      const url = document.getElementById('new-photo-url').value.trim();
+      const pin = document.getElementById('admin-pin').value;
+      if (!url) return alert('Ingresa una URL válida');
+
+      const res = await fetch(`${API_BASE}/api/settings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Pin': pin },
+        body: JSON.stringify({ key: 'profile_photo', value: url })
+      });
+
+      if (res.ok) {
+        document.getElementById('new-photo-url').value = '';
+        loadData();
+        alert('¡Foto de perfil actualizada!');
+      } else {
+        alert('Error al actualizar la foto');
+      }
+    }
+
     async function addNewService() {
       const title = document.getElementById('new-svc-title').value.trim();
       const desc = document.getElementById('new-svc-desc').value.trim();
@@ -325,7 +361,7 @@
         document.getElementById('new-svc-icon').value = '';
         loadData();
         renderAdminServices();
-        alert('¡Servicio guardado en D1!');
+        alert('¡Servicio guardado!');
       } else { alert('Error al guardar'); }
     }
 
@@ -338,7 +374,6 @@
       if (res.ok) { loadData(); renderAdminServices(); } else { alert('Error al eliminar'); }
     }
 
-    // Abre el panel automáticamente solo si usas #admin en la URL
     if (window.location.hash === '#admin') {
       openAdminModal();
     }
